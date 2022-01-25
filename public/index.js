@@ -70,36 +70,29 @@ async function generateUserConfig() {
         {
           key: "wrap-cloze",
           label: lang === "zh-CN" ? "包围成 cloze" : "Wrap with cloze",
-          binding: "mod+ctrl+c",
+          binding: "mod+shift+e",
           template: "{{cloze $^}}",
         },
         {
           key: "wrap-red-hl",
           label:
             lang === "zh-CN" ? "包围成红色高亮" : "Wrap with red highlight",
-          binding: "mod+ctrl+r",
+          binding: "mod+shift+r",
           template: "[[#red]]==$^==",
         },
         {
           key: "wrap-green-hl",
           label:
             lang === "zh-CN" ? "包围成绿色高亮" : "Wrap with green highlight",
-          binding: "mod+ctrl+g",
+          binding: "mod+shift+g",
           template: "[[#green]]==$^==",
         },
         {
           key: "wrap-blue-hl",
           label:
             lang === "zh-CN" ? "包围成蓝色高亮" : "Wrap with blue highlight",
-          binding: "mod+ctrl+b",
+          binding: "mod+shift+b",
           template: "[[#blue]]==$^==",
-        },
-        {
-          key: "wrap-yellow-hl",
-          label:
-            lang === "zh-CN" ? "包围成黄色高亮" : "Wrap with yellow highlight",
-          binding: "mod+ctrl+y",
-          template: "[[#yellow]]==$^==",
         },
         {
           key: "wrap-red-text",

@@ -18,32 +18,26 @@ Create your own wrappings with optional key bindings for selected text, a set of
     {
       "key": "wrap-cloze",
       "label": "Wrap with cloze",
-      "binding": "mod+ctrl+c",
+      "binding": "mod+shift+e",
       "template": "{{cloze $^}}"
     },
     {
       "key": "wrap-red-hl",
       "label": "Wrap with red highlight",
-      "binding": "mod+ctrl+r",
+      "binding": "mod+shift+r",
       "template": "[[#red]]==$^=="
     },
     {
       "key": "wrap-green-hl",
       "label": "Wrap with green highlight",
-      "binding": "mod+ctrl+g",
+      "binding": "mod+shift+g",
       "template": "[[#green]]==$^=="
     },
     {
       "key": "wrap-blue-hl",
       "label": "Wrap with blue highlight",
-      "binding": "mod+ctrl+b",
+      "binding": "mod+shift+b",
       "template": "[[#blue]]==$^=="
-    },
-    {
-      "key": "wrap-yellow-hl",
-      "label": "Wrap with yellow highlight",
-      "binding": "mod+ctrl+y",
-      "template": "[[#yellow]]==$^=="
     },
     {
       "key": "wrap-red-text",
