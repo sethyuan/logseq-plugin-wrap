@@ -131,13 +131,26 @@ async function wrap(template) {
   const block = await logseq.Editor.getCurrentBlock()
   const textarea = parent.document.activeElement
 
-  if (block == null || textarea == null) return
+  if (
+    block == null ||
+    textarea == null ||
+    textarea.nodeName.toLowerCase() !== "textarea"
+  ) {
+    const { preferredLanguage: lang } = await logseq.App.getUserConfigs()
+    logseq.App.showMsg(
+      lang === "zh-CN"
+        ? "该命令只能通过快捷键使用"
+        : "This command can only be used with shortcuts",
+      "error",
+    )
+    return
+  }
 
   const start = textarea.selectionStart
   const end = textarea.selectionEnd
-  const before = block.content.substring(0, start)
+  const before = textarea.value.substring(0, start)
   const selection = textarea.value.substring(start, end)
-  const after = block.content.substring(end)
+  const after = textarea.value.substring(end)
   const [wrapBefore, wrapAfter] = template.split("$^")
   const text = `${before}${wrapBefore}${selection}${wrapAfter ?? ""}${after}`
   await logseq.Editor.updateBlock(block.uuid, text)
