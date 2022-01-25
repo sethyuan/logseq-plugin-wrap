@@ -1,0 +1,20 @@
+{
+  "name": "logseq-plugin-wrap",
+  "version": "1.0.0",
+  "main": "dist/index.html",
+  "logseq": {
+    "id": "_sethyuan-logseq-wrap",
+    "icon": "./icon.png"
+  },
+  "scripts": {
+    "start": "wmr",
+    "build": "wmr build",
+    "serve": "wmr serve"
+  },
+  "dependencies": {
+    "@logseq/libs": "^0.0.1-alpha.34"
+  },
+  "devDependencies": {
+    "wmr": "^3.7.2"
+  }
+}
