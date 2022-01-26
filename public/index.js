@@ -1,6 +1,11 @@
 import "@logseq/libs"
 
+let textarea
+
 async function main() {
+  // Reset textarea value.
+  textarea = null
+
   const settings = await generateUserConfig()
 
   logseq.provideStyle(`
@@ -41,6 +46,8 @@ async function main() {
     }
   `)
 
+  parent.document.addEventListener("selectionchange", onSelectionChange)
+
   const model = {}
   for (const { key, template } of settings.wrappings) {
     model[key] = () => wrap(template)
@@ -55,6 +62,10 @@ async function main() {
       )
     }
   }
+
+  logseq.beforeunload(async () => {
+    parent.document.removeEventListener("selectionchange", onSelectionChange)
+  })
 
   console.log("#wrap loaded")
 }
@@ -122,18 +133,13 @@ async function generateUserConfig() {
 
 async function wrap(template) {
   const block = await logseq.Editor.getCurrentBlock()
-  const textarea = parent.document.activeElement
 
-  if (
-    block == null ||
-    textarea == null ||
-    textarea.nodeName.toLowerCase() !== "textarea"
-  ) {
+  if (block == null || textarea == null || !textarea.isConnected) {
     const { preferredLanguage: lang } = await logseq.App.getUserConfigs()
     logseq.App.showMsg(
       lang === "zh-CN"
-        ? "该命令只能通过快捷键使用"
-        : "This command can only be used with shortcuts",
+        ? "该命令仅在编辑文字时可使用"
+        : "This command can only be used when editing text",
       "error",
     )
     return
@@ -147,7 +153,16 @@ async function wrap(template) {
   const [wrapBefore, wrapAfter] = template.split("$^")
   const text = `${before}${wrapBefore}${selection}${wrapAfter ?? ""}${after}`
   await logseq.Editor.updateBlock(block.uuid, text)
+  textarea.focus()
   textarea.setSelectionRange(start + wrapBefore.length, end + wrapBefore.length)
+}
+
+function onSelectionChange(e) {
+  const activeElement = parent.document.activeElement
+  if (activeElement === textarea) return
+  if (activeElement.nodeName.toLowerCase() === "textarea") {
+    textarea = activeElement
+  }
 }
 
 logseq.ready(main).catch(console.error)
