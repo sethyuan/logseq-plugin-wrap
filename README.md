@@ -68,3 +68,37 @@ Create your own wrappings with optional key bindings for selected text, a set of
 There are a couple of user settings available when you access the plugin settings from Logseq's plugins page. Please refer to the source block above (Default values are given in the source block).
 
 - `wrappings`: Your custom wrappings are defined here. You can extend default wrappings and/or replace/remove them. Please refer to the above configuration for how to define wrappings, `key` and `binding` should be unique, `template` defines how you want the selected text to be wrapped, `$^` represents the selected text.
+
+## 自定义工具栏样式 (Toolbar style customization)
+
+请参看下方示例：
+
+Please refer to the following example:
+
+```css
+/* 这里更改工具栏本身的样式 */
+/* Here goes styles for the toolbar itself */
+#kef-wrap-toolbar {
+  background: #333;
+}
+
+/* 这里是工具栏上按钮的样式 */
+/* Here goes styles for toolbar buttons */
+.kef-wrap-tb-item {
+  width: 30px;
+  line-height: 30px;
+  height: 30px;
+}
+
+/* 这里是工具栏上按钮在有鼠标悬浮时的样式 */
+/* Here goes styles for toolbar buttons when hovered */
+.kef-wrap-tb-item:hover {
+  filter: drop-shadow(0 0 3px #fff);
+}
+
+/* 这里可以定义svg图标的样式 */
+/* Here you can define styles for the svg icon */
+.kef-wrap-tb-item svg {
+  fill: #eee;
+}
+```
