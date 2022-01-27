@@ -1,14 +1,44 @@
 import "@logseq/libs"
+import { render } from "preact"
+import { debounce, throttle } from "rambdax"
+import Toolbar from "./Toolbar.jsx"
 
+const TOOLBAR_ID = "kef-wrap-toolbar"
+const HEADBAR_HEIGHT = 48
+let toolbar
 let textarea
 
 async function main() {
-  // Reset textarea value.
+  // Reset values.
+  toolbar = null
   textarea = null
 
   const settings = await generateUserConfig()
 
   logseq.provideStyle(`
+    #kef-wrap-toolbar {
+      position: absolute;
+      top: 0;
+      left: -99999px;
+      opacity: 0;
+      will-change: opacity;
+      transition: opacity 100ms ease-in-out;
+      background: #111;
+      border-radius: 6px;
+      color: #fff;
+      display: flex;
+      align-items: center;
+      height: 30px;
+      padding: 0 10px;
+    }
+    #main-container {
+      overflow: hidden;
+    }
+
+    .dark-theme #kef-wrap-toolbar {
+
+    }
+
     span[data-ref="#red"],
     span[data-ref="#green"],
     span[data-ref="#blue"],
@@ -46,13 +76,49 @@ async function main() {
     }
   `)
 
-  parent.document.addEventListener("selectionchange", onSelectionChange)
-
   const model = {}
   for (const { key, template } of settings.wrappings) {
     model[key] = () => wrap(template)
   }
   logseq.provideModel(model)
+
+  if (settings.toolbar) {
+    logseq.provideUI({
+      key: TOOLBAR_ID,
+      path: "#main-container",
+      template: `<div id="${TOOLBAR_ID}"></div>`,
+    })
+
+    // Let div root element get generated first.
+    setTimeout(async () => {
+      toolbar = parent.document.getElementById(TOOLBAR_ID)
+      render(<Toolbar items={settings.wrappings} model={model} />, toolbar)
+
+      toolbar.addEventListener("transitionend", onToolbarTransitionEnd)
+      parent.document.addEventListener("focusout", onBlur)
+
+      const mainContentContainer = parent.document.getElementById(
+        "main-content-container",
+      )
+      mainContentContainer.addEventListener("scroll", onScroll, {
+        passive: true,
+      })
+    }, 0)
+  }
+
+  parent.document.addEventListener("selectionchange", onSelectionChange)
+
+  logseq.beforeunload(async () => {
+    const mainContentContainer = parent.document.getElementById(
+      "main-content-container",
+    )
+    mainContentContainer.removeEventListener("scroll", onScroll, {
+      passive: true,
+    })
+    toolbar?.removeEventListener("transitionend", onToolbarTransitionEnd)
+    parent.document.removeEventListener("focusout", onBlur)
+    parent.document.removeEventListener("selectionchange", onSelectionChange)
+  })
 
   for (const { key, label, binding } of settings.wrappings) {
     if (binding) {
@@ -62,10 +128,6 @@ async function main() {
       )
     }
   }
-
-  logseq.beforeunload(async () => {
-    parent.document.removeEventListener("selectionchange", onSelectionChange)
-  })
 
   console.log("#wrap loaded")
 }
@@ -157,12 +219,65 @@ async function wrap(template) {
   textarea.setSelectionRange(start + wrapBefore.length, end + wrapBefore.length)
 }
 
-function onSelectionChange(e) {
+async function onSelectionChange(e) {
   const activeElement = parent.document.activeElement
-  if (activeElement === textarea) return
-  if (activeElement.nodeName.toLowerCase() === "textarea") {
+  if (
+    activeElement !== textarea &&
+    activeElement.nodeName.toLowerCase() === "textarea"
+  ) {
     textarea = activeElement
   }
+
+  if (toolbar != null && textarea?.isConnected) {
+    if (
+      textarea.selectionStart === textarea.selectionEnd &&
+      toolbar.style.opacity !== "0"
+    ) {
+      toolbar.style.opacity = "0"
+    } else if (textarea.selectionStart !== textarea.selectionEnd) {
+      await positionToolbar()
+    }
+  }
+}
+
+async function positionToolbar() {
+  const curPos = await logseq.Editor.getEditingCursorPosition()
+  if (curPos != null) {
+    toolbar.style.top = `${curPos.top + curPos.rect.y - 35 - HEADBAR_HEIGHT}px`
+    toolbar.style.left = `${curPos.left + curPos.rect.x}px`
+    toolbar.style.opacity = "1"
+  }
+}
+
+function onToolbarTransitionEnd(e) {
+  if (toolbar.style.opacity === "0") {
+    toolbar.style.top = "0"
+    toolbar.style.left = "-99999px"
+  }
+}
+
+function onBlur(e) {
+  // Update toolbar visibility upon activeElement change.
+  if (document.activeElement !== textarea && toolbar?.style.opacity !== "0") {
+    toolbar.style.opacity = "0"
+  }
+}
+
+// There is a large gap between 2 displays of the toolbar, so a large
+// ms number is acceptable.
+const hideToolbar = throttle(() => {
+  if (toolbar.style.opacity !== "0") {
+    toolbar.style.opacity = "0"
+  }
+}, 1000)
+
+const showToolbar = debounce(async () => {
+  await positionToolbar()
+}, 100)
+
+function onScroll(e) {
+  hideToolbar()
+  showToolbar()
 }
 
 logseq.ready(main).catch(console.error)
