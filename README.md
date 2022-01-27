@@ -63,10 +63,12 @@ Create your own wrappings with optional key bindings for selected text, a set of
 
 在 Logseq 的插件页面打开插件的配置后，有以下几项配置可供使用，请参照上方代码块进行设置（各项的默认值以体现在代码块中）：
 
+- `toolbar`: 不想用工具栏可以设置为`false`。
 - `wrappings`: 自定义的文字包围都定义在这里。你可以扩展默认提供的行为，也可以移除或替换你不需要的默认行为。配置方法请参考上面的配置，`key`与`binding`不能出现重复。`template`是你包围文字的模板，里面的`$^`代表原本被选中的文字。
 
 There are a couple of user settings available when you access the plugin settings from Logseq's plugins page. Please refer to the source block above (Default values are given in the source block).
 
+- `toolbar`: You can set it to `false` if you don't want to use the toolbar.
 - `wrappings`: Your custom wrappings are defined here. You can extend default wrappings and/or replace/remove them. Please refer to the above configuration for how to define wrappings, `key` and `binding` should be unique, `template` defines how you want the selected text to be wrapped, `$^` represents the selected text.
 
 ## 自定义工具栏样式 (Toolbar style customization)
