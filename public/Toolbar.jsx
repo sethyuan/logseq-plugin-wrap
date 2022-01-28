@@ -11,8 +11,16 @@ export default function Toolbar({ items, model }) {
       key={key}
       className="kef-wrap-tb-item"
       onMouseDown={(e) => triggerAction(e, key)}
-      dangerouslySetInnerHTML={{ __html: icon || "X" }}
       title={label}
-    ></div>
+    >
+      {icon ? (
+        <img
+          src={`data:image/svg+xml;utf8,${encodeURIComponent(icon)}`}
+          alt={label}
+        />
+      ) : (
+        "X"
+      )}
+    </div>
   ))
 }
