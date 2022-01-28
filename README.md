@@ -95,8 +95,9 @@ Please refer to the following example:
 
 /* 这里可以定义svg图标的样式 */
 /* Here you can define styles for the svg icon */
-.kef-wrap-tb-item svg {
-  fill: #eee;
+.kef-wrap-tb-item img {
+  width: 20px;
+  height: 20px;
 }
 ```
 
