@@ -99,3 +99,45 @@ Please refer to the following example:
   fill: #eee;
 }
 ```
+
+内置高亮与文字色的样式如下：
+
+Builtin styles for highlight and text color is as follows:
+
+```css
+span[data-ref="#red"],
+span[data-ref="#green"],
+span[data-ref="#blue"],
+span[data-ref="$red"],
+span[data-ref="$green"],
+span[data-ref="$blue"] {
+  display: none;
+}
+span[data-ref="#red"] + mark {
+  background: #ffc7c7;
+}
+span[data-ref="#green"] + mark {
+  background: #ccffc1;
+}
+span[data-ref="#blue"] + mark {
+  background: #abdfff;
+}
+span[data-ref="$red"] + mark {
+  color: #f00;
+  background: unset;
+  padding: 0;
+  border-radius: 0;
+}
+span[data-ref="$green"] + mark {
+  color: #0f0;
+  background: unset;
+  padding: 0;
+  border-radius: 0;
+}
+span[data-ref="$blue"] + mark {
+  color: #00f;
+  background: unset;
+  padding: 0;
+  border-radius: 0;
+}
+```
