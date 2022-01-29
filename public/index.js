@@ -13,7 +13,7 @@ async function main() {
   toolbar = null
   textarea = null
 
-  const wrappings = await getWrappings()
+  const definitions = await getDefinitions()
 
   logseq.provideStyle(`
     #main-container {
@@ -90,8 +90,10 @@ async function main() {
   `)
 
   const model = {}
-  for (const { key, template } of wrappings) {
-    model[key] = () => wrap(template)
+  for (const { key, template, regex, replacement } of definitions) {
+    model[key] = key.startsWith("wrap-")
+      ? () => updateBlockText(wrap, template)
+      : () => updateBlockText(repl, regex, replacement)
   }
   logseq.provideModel(model)
 
@@ -105,7 +107,7 @@ async function main() {
     // Let div root element get generated first.
     setTimeout(async () => {
       toolbar = parent.document.getElementById(TOOLBAR_ID)
-      render(<Toolbar items={wrappings} model={model} />, toolbar)
+      render(<Toolbar items={definitions} model={model} />, toolbar)
 
       toolbar.addEventListener("transitionend", onToolbarTransitionEnd)
       parent.document.addEventListener("focusout", onBlur)
@@ -133,7 +135,7 @@ async function main() {
     parent.document.removeEventListener("selectionchange", onSelectionChange)
   })
 
-  for (const { key, label, binding } of wrappings) {
+  for (const { key, label, binding } of definitions) {
     if (binding) {
       logseq.App.registerCommandPalette(
         { key, label, keybinding: { binding } },
@@ -145,13 +147,13 @@ async function main() {
   console.log("#wrap loaded")
 }
 
-async function getWrappings() {
+async function getDefinitions() {
   if (
     logseq.settings &&
     Object.keys(logseq.settings).some((k) => k.startsWith("wrap-"))
   ) {
     return Object.entries(logseq.settings)
-      .filter(([k, v]) => k.startsWith("wrap-"))
+      .filter(([k, v]) => k.startsWith("wrap-") || k.startsWith("repl-"))
       .map(([k, v]) => ({ key: k, ...v }))
   }
 
@@ -190,26 +192,34 @@ async function getWrappings() {
       label: lang === "zh-CN" ? "包围成红色文字" : "Wrap with red text",
       binding: "",
       template: "[[$red]]^^$^^^",
-      icon: `<svg t="1643270432116" class="icon" viewBox="0 0 1024 1024" version="1.1" xmlns="http://www.w3.org/2000/svg" p-id="12761" width="200" height="200"><path d="M256 768h512a85.333333 85.333333 0 0 1 85.333333 85.333333v42.666667a85.333333 85.333333 0 0 1-85.333333 85.333333H256a85.333333 85.333333 0 0 1-85.333333-85.333333v-42.666667a85.333333 85.333333 0 0 1 85.333333-85.333333z m0 85.333333v42.666667h512v-42.666667H256z m401.578667-341.333333H366.421333L298.666667 682.666667H213.333333l256.128-640H554.666667l256 640h-85.333334l-67.754666-170.666667z m-33.877334-85.333333L512 145.365333 400.298667 426.666667h223.402666z" p-id="12762" fill="#f00"></path></svg>`,
+      icon: `<svg t="1643270432116" viewBox="0 0 1024 1024" version="1.1" xmlns="http://www.w3.org/2000/svg" p-id="12761" width="200" height="200"><path d="M256 768h512a85.333333 85.333333 0 0 1 85.333333 85.333333v42.666667a85.333333 85.333333 0 0 1-85.333333 85.333333H256a85.333333 85.333333 0 0 1-85.333333-85.333333v-42.666667a85.333333 85.333333 0 0 1 85.333333-85.333333z m0 85.333333v42.666667h512v-42.666667H256z m401.578667-341.333333H366.421333L298.666667 682.666667H213.333333l256.128-640H554.666667l256 640h-85.333334l-67.754666-170.666667z m-33.877334-85.333333L512 145.365333 400.298667 426.666667h223.402666z" p-id="12762" fill="#f00"></path></svg>`,
     },
     {
       key: "wrap-green-text",
       label: lang === "zh-CN" ? "包围成绿色文字" : "Wrap with green text",
       binding: "",
       template: "[[$green]]^^$^^^",
-      icon: `<svg t="1643270432116" class="icon" viewBox="0 0 1024 1024" version="1.1" xmlns="http://www.w3.org/2000/svg" p-id="12761" width="200" height="200"><path d="M256 768h512a85.333333 85.333333 0 0 1 85.333333 85.333333v42.666667a85.333333 85.333333 0 0 1-85.333333 85.333333H256a85.333333 85.333333 0 0 1-85.333333-85.333333v-42.666667a85.333333 85.333333 0 0 1 85.333333-85.333333z m0 85.333333v42.666667h512v-42.666667H256z m401.578667-341.333333H366.421333L298.666667 682.666667H213.333333l256.128-640H554.666667l256 640h-85.333334l-67.754666-170.666667z m-33.877334-85.333333L512 145.365333 400.298667 426.666667h223.402666z" p-id="12762" fill="#0f0"></path></svg>`,
+      icon: `<svg t="1643270432116" viewBox="0 0 1024 1024" version="1.1" xmlns="http://www.w3.org/2000/svg" p-id="12761" width="200" height="200"><path d="M256 768h512a85.333333 85.333333 0 0 1 85.333333 85.333333v42.666667a85.333333 85.333333 0 0 1-85.333333 85.333333H256a85.333333 85.333333 0 0 1-85.333333-85.333333v-42.666667a85.333333 85.333333 0 0 1 85.333333-85.333333z m0 85.333333v42.666667h512v-42.666667H256z m401.578667-341.333333H366.421333L298.666667 682.666667H213.333333l256.128-640H554.666667l256 640h-85.333334l-67.754666-170.666667z m-33.877334-85.333333L512 145.365333 400.298667 426.666667h223.402666z" p-id="12762" fill="#0f0"></path></svg>`,
     },
     {
       key: "wrap-blue-text",
       label: lang === "zh-CN" ? "包围成蓝色文字" : "Wrap with blue text",
       binding: "",
       template: "[[$blue]]^^$^^^",
-      icon: `<svg t="1643270432116" class="icon" viewBox="0 0 1024 1024" version="1.1" xmlns="http://www.w3.org/2000/svg" p-id="12761" width="200" height="200"><path d="M256 768h512a85.333333 85.333333 0 0 1 85.333333 85.333333v42.666667a85.333333 85.333333 0 0 1-85.333333 85.333333H256a85.333333 85.333333 0 0 1-85.333333-85.333333v-42.666667a85.333333 85.333333 0 0 1 85.333333-85.333333z m0 85.333333v42.666667h512v-42.666667H256z m401.578667-341.333333H366.421333L298.666667 682.666667H213.333333l256.128-640H554.666667l256 640h-85.333334l-67.754666-170.666667z m-33.877334-85.333333L512 145.365333 400.298667 426.666667h223.402666z" p-id="12762" fill="#00beff"></path></svg>`,
+      icon: `<svg t="1643270432116" viewBox="0 0 1024 1024" version="1.1" xmlns="http://www.w3.org/2000/svg" p-id="12761" width="200" height="200"><path d="M256 768h512a85.333333 85.333333 0 0 1 85.333333 85.333333v42.666667a85.333333 85.333333 0 0 1-85.333333 85.333333H256a85.333333 85.333333 0 0 1-85.333333-85.333333v-42.666667a85.333333 85.333333 0 0 1 85.333333-85.333333z m0 85.333333v42.666667h512v-42.666667H256z m401.578667-341.333333H366.421333L298.666667 682.666667H213.333333l256.128-640H554.666667l256 640h-85.333334l-67.754666-170.666667z m-33.877334-85.333333L512 145.365333 400.298667 426.666667h223.402666z" p-id="12762" fill="#00beff"></path></svg>`,
+    },
+    {
+      key: "repl-clear",
+      label: lang === "zh-CN" ? "去除格式化" : "Remove formatting",
+      binding: "mod+shift+x",
+      regex: `\\[\\[(?:#|\\$)(?:red|green|blue)\\]\\]|==([^=]*)==|\\^\\^([^\\^]*)\\^\\^|\\*\\*([^\\*]*)\\*\\*|\\*([^\\*]*)\\*|_([^_]*)_|\\$([^\\$]*)\\$`,
+      replacement: "$1$2$3$4$5$6",
+      icon: `<svg t="1643381967522" viewBox="0 0 1024 1024" version="1.1" xmlns="http://www.w3.org/2000/svg" p-id="1377" width="200" height="200"><path d="M824.4 438.8c0-37.6-30-67.6-67.6-67.6l-135.2 0L621.6 104.8c0-37.6-30-67.6-67.6-67.6-37.6 0-67.6 30-67.6 67.6l0 266.4L358.8 371.2c-37.6 0-67.6 30-67.6 67.6l0 67.6L828 506.4l0-67.6L824.4 438.8 824.4 438.8zM824.4 574c-11.2 0-536.8 0-536.8 0S250 972 88.4 972L280 972c75.2 0 108.8-217.6 108.8-217.6s33.6 195.2 3.6 217.6l105.2 0c-3.6 0 0 0 11.2 0 52.4-7.6 60-247.6 60-247.6s52.4 244 45.2 244c-26.4 0-78.8 0-105.2 0l0 0 154 0c-7.6 0 0 0 11.2 0 48.8-11.2 52.4-187.6 52.4-187.6s22.4 187.6 15.2 187.6c-18.8 0-48.8 0-67.6 0l-3.6 0 90 0C895.6 972 903.2 784.4 824.4 574L824.4 574z" p-id="1378" fill="#eeeeee"></path></svg>`,
     },
   ]
 }
 
-async function wrap(template) {
+async function updateBlockText(producer, ...args) {
   const block = await logseq.Editor.getCurrentBlock()
 
   if (block == null || textarea == null || !textarea.isConnected) {
@@ -228,11 +238,31 @@ async function wrap(template) {
   const before = textarea.value.substring(0, start)
   const selection = textarea.value.substring(start, end)
   const after = textarea.value.substring(end)
-  const [wrapBefore, wrapAfter] = template.split("$^")
-  const text = `${before}${wrapBefore}${selection}${wrapAfter ?? ""}${after}`
+  const [text, selStart, selEnd] = await producer(
+    before,
+    selection,
+    after,
+    start,
+    end,
+    ...args,
+  )
   await logseq.Editor.updateBlock(block.uuid, text)
   textarea.focus()
-  textarea.setSelectionRange(start + wrapBefore.length, end + wrapBefore.length)
+  textarea.setSelectionRange(selStart, selEnd)
+}
+
+function wrap(before, selection, after, start, end, template) {
+  const [wrapBefore, wrapAfter] = template.split("$^")
+  return [
+    `${before}${wrapBefore}${selection}${wrapAfter ?? ""}${after}`,
+    start + wrapBefore.length,
+    end + wrapBefore.length,
+  ]
+}
+
+function repl(before, selection, after, start, end, regex, replacement) {
+  const newText = selection.replace(new RegExp(regex, "g"), replacement)
+  return [`${before}${newText}${after}`, start, start + newText.length]
 }
 
 async function onSelectionChange(e) {
@@ -288,7 +318,9 @@ const hideToolbar = throttle(() => {
 }, 1000)
 
 const showToolbar = debounce(async () => {
-  await positionToolbar()
+  if (textarea != null && textarea.selectionStart !== textarea.selectionEnd) {
+    await positionToolbar()
+  }
 }, 100)
 
 function onScroll(e) {

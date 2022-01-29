@@ -55,6 +55,13 @@ Create your own wrappings with optional key bindings for selected text, a set of
     "binding": "",
     "template": "[[$blue]]^^$^^^",
     "icon": "<svg t=\"1643270432116\" class=\"icon\" viewBox=\"0 0 1024 1024\" version=\"1.1\" xmlns=\"http://www.w3.org/2000/svg\" p-id=\"12761\" width=\"200\" height=\"200\"><path d=\"M256 768h512a85.333333 85.333333 0 0 1 85.333333 85.333333v42.666667a85.333333 85.333333 0 0 1-85.333333 85.333333H256a85.333333 85.333333 0 0 1-85.333333-85.333333v-42.666667a85.333333 85.333333 0 0 1 85.333333-85.333333z m0 85.333333v42.666667h512v-42.666667H256z m401.578667-341.333333H366.421333L298.666667 682.666667H213.333333l256.128-640H554.666667l256 640h-85.333334l-67.754666-170.666667z m-33.877334-85.333333L512 145.365333 400.298667 426.666667h223.402666z\" p-id=\"12762\" fill=\"#00beff\"></path></svg>"
+  },
+  "repl-clear": {
+    "label": "Remove formatting",
+    "binding": "mod+shift+x",
+    "regex": "\\[\\[(?:#|\\$)(?:red|green|blue)\\]\\]|==([^=]*)==|\\^\\^([^\\^]*)\\^\\^|\\*\\*([^\\*]*)\\*\\*|\\*([^\\*]*)\\*|_([^_]*)_|\\$([^\\$]*)\\$",
+    "replacement": "$1$2$3$4$5$6",
+    "icon": "<svg t=\"1643381967522\" viewBox=\"0 0 1024 1024\" version=\"1.1\" xmlns=\"http://www.w3.org/2000/svg\" p-id=\"1377\" width=\"200\" height=\"200\"><path d=\"M824.4 438.8c0-37.6-30-67.6-67.6-67.6l-135.2 0L621.6 104.8c0-37.6-30-67.6-67.6-67.6-37.6 0-67.6 30-67.6 67.6l0 266.4L358.8 371.2c-37.6 0-67.6 30-67.6 67.6l0 67.6L828 506.4l0-67.6L824.4 438.8 824.4 438.8zM824.4 574c-11.2 0-536.8 0-536.8 0S250 972 88.4 972L280 972c75.2 0 108.8-217.6 108.8-217.6s33.6 195.2 3.6 217.6l105.2 0c-3.6 0 0 0 11.2 0 52.4-7.6 60-247.6 60-247.6s52.4 244 45.2 244c-26.4 0-78.8 0-105.2 0l0 0 154 0c-7.6 0 0 0 11.2 0 48.8-11.2 52.4-187.6 52.4-187.6s22.4 187.6 15.2 187.6c-18.8 0-48.8 0-67.6 0l-3.6 0 90 0C895.6 972 903.2 784.4 824.4 574L824.4 574z\" p-id=\"1378\" fill=\"#eeeeee\"></path></svg>"
   }
 }
 ```
@@ -63,11 +70,13 @@ Create your own wrappings with optional key bindings for selected text, a set of
 
 - `toolbar`: 不想用工具栏可以设置为`false`。
 - `wrap-*`: 自定义的文字包围都定义在这里。你可以扩展默认提供的这些规则，也可以移除或替换你不需要的规则。配置方法请参考上面的示例，`binding`不能出现重复。`template`是你包围文字的模板，里面的`$^`代表原本被选中的文字。
+- `repl-*`: 自定义的问题替换都定义在这里。你可以扩展默认提供的这些规则，也可以移除或替换你不需要的规则。配置方法请参考上面的示例，`binding`不能出现重复。`regex`是替换规则的正则表达式，`replacement`描述了要将正则表达式匹配到的文字替换为什么。
 
 There are a couple of user settings available when you access the plugin settings from Logseq's plugins page. Please refer to the source block above (Default values are given in the source block).
 
 - `toolbar`: You can set it to `false` if you don't want to use the toolbar.
-- `wrap-*`: Your custom wrappings are defined here. You can extend default wrappings and/or replace/remove them. Please refer to the above configuration for how to define wrappings, `binding` should be unique, `template` defines how you want the selected text to be wrapped, `$^` represents the selected text.
+- `wrap-*`: Your custom wrappings are defined here. You can extend default wrappings and/or replace/remove them. Please refer to the above configuration for how to define wrappings. `binding` should be unique, `template` defines how you want the selected text to be wrapped, `$^` represents the selected text.
+- `repl-*`: Your custom replacements are defined here. You can extend default replacements and/or replace/remove them. Please refer to the above configuration for how to define replacements. `binding` should be unique, `regex` is the regular expression used to match text that you want to replace to, `replacement` defines what to replace the match with.
 
 ## 自定义工具栏样式 (Toolbar style customization)
 
@@ -142,3 +151,9 @@ span[data-ref="$blue"] + mark {
   border-radius: 0;
 }
 ```
+
+## 关于内置的去除格式化 (About builtin "Remove formatting")
+
+出于技术原因，嵌套的格式不会被去除干净，这种情况下你可以尝试多次去除。
+
+Due to technical reason, nested formatting is not cleared completely, you can try to perform multiple removings in this case.
