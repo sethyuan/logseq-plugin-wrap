@@ -10,7 +10,7 @@ Create your own wrappings with optional key bindings for selected text, a set of
 
 ## 用户配置 (User configs)
 
-![open_settings](./open_settings.gif)
+![open_settings](./open_settings.png)
 
 ```json
 {
