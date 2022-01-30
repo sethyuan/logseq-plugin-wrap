@@ -1,8 +1,8 @@
 # logseq-plugin-wrap
 
-创建自定义文字包围及快捷键，默认提供了一组实用的配置。
+创建自定义文字包围/替换及快捷键，默认提供了一组实用的配置。
 
-Create your own wrappings with optional key bindings for selected text, a set of useful defaults is also provided.
+Create your own wrappings/replacements with optional key bindings for selected text. A set of useful defaults is also provided.
 
 ## 使用展示 (Usage)
 
@@ -72,7 +72,7 @@ Create your own wrappings with optional key bindings for selected text, a set of
 
 - `toolbar`: 不想用工具栏可以设置为`false`。
 - `wrap-*`: 自定义的文字包围都定义在这里。你可以扩展默认提供的这些规则，也可以移除或替换你不需要的规则。配置方法请参考上面的示例，`binding`不能出现重复。`template`是你包围文字的模板，里面的`$^`代表原本被选中的文字。
-- `repl-*`: 自定义的问题替换都定义在这里。你可以扩展默认提供的这些规则，也可以移除或替换你不需要的规则。配置方法请参考上面的示例，`binding`不能出现重复。`regex`是替换规则的正则表达式，`replacement`描述了要将正则表达式匹配到的文字替换为什么。
+- `repl-*`: 自定义的文字替换都定义在这里。你可以扩展默认提供的这些规则，也可以移除或替换你不需要的规则。配置方法请参考上面的示例，`binding`不能出现重复。`regex`是替换规则的正则表达式，`replacement`描述了要将正则表达式匹配到的文字替换为什么。
 
 There are a couple of user settings available when you access the plugin settings from Logseq's plugins page. Please refer to the source block above (Default values are given in the source block).
 
