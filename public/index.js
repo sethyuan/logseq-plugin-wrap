@@ -274,7 +274,7 @@ async function onSelectionChange(e) {
     textarea = activeElement
   }
 
-  if (toolbar != null && textarea?.isConnected) {
+  if (toolbar != null && activeElement === textarea) {
     if (
       textarea.selectionStart === textarea.selectionEnd &&
       toolbar.style.opacity !== "0"
