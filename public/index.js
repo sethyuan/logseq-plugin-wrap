@@ -4,7 +4,6 @@ import { debounce, throttle } from "rambdax"
 import Toolbar from "./Toolbar.jsx"
 
 const TOOLBAR_ID = "kef-wrap-toolbar"
-const HEADBAR_HEIGHT = 48
 let toolbar
 let textarea
 
@@ -16,13 +15,11 @@ async function main() {
   const definitions = await getDefinitions()
 
   logseq.provideStyle(`
-    #main-container {
-      overflow: hidden;
-    }
     #kef-wrap-toolbar {
       position: absolute;
       top: 0;
       left: -99999px;
+      z-index: var(--ls-z-index-level-2);
       opacity: 0;
       will-change: opacity;
       transition: opacity 100ms ease-in-out;
@@ -100,7 +97,7 @@ async function main() {
   if (logseq.settings?.toolbar ?? true) {
     logseq.provideUI({
       key: TOOLBAR_ID,
-      path: "#main-container",
+      path: "#app-container",
       template: `<div id="${TOOLBAR_ID}"></div>`,
     })
 
@@ -289,8 +286,17 @@ async function onSelectionChange(e) {
 async function positionToolbar() {
   const curPos = await logseq.Editor.getEditingCursorPosition()
   if (curPos != null) {
-    toolbar.style.top = `${curPos.top + curPos.rect.y - 35 - HEADBAR_HEIGHT}px`
-    toolbar.style.left = `${curPos.left + curPos.rect.x}px`
+    toolbar.style.top = `${curPos.top + curPos.rect.y - 35}px`
+    if (
+      curPos.left + curPos.rect.x + toolbar.clientWidth <=
+      parent.window.innerWidth
+    ) {
+      toolbar.style.left = `${curPos.left + curPos.rect.x}px`
+    } else {
+      toolbar.style.left = `${
+        -toolbar.clientWidth + parent.window.innerWidth
+      }px`
+    }
     toolbar.style.opacity = "1"
   }
 }
