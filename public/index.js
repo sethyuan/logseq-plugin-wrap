@@ -138,6 +138,8 @@ async function main() {
         { key, label, keybinding: { binding } },
         model[key],
       )
+    } else {
+      logseq.App.registerCommandPalette({ key, label }, model[key])
     }
   }
 
@@ -219,7 +221,7 @@ async function getDefinitions() {
 async function updateBlockText(producer, ...args) {
   const block = await logseq.Editor.getCurrentBlock()
 
-  if (block == null || textarea == null || !textarea.isConnected) {
+  if (block == null || textarea == null) {
     const { preferredLanguage: lang } = await logseq.App.getUserConfigs()
     logseq.App.showMsg(
       lang === "zh-CN"
@@ -244,8 +246,13 @@ async function updateBlockText(producer, ...args) {
     ...args,
   )
   await logseq.Editor.updateBlock(block.uuid, text)
-  textarea.focus()
-  textarea.setSelectionRange(selStart, selEnd)
+  if (textarea?.isConnected) {
+    textarea.focus()
+    textarea.setSelectionRange(selStart, selEnd)
+  } else {
+    await logseq.Editor.editBlock(block.uuid)
+    parent.document.activeElement.setSelectionRange(selStart, selEnd)
+  }
 }
 
 function wrap(before, selection, after, start, end, template) {
