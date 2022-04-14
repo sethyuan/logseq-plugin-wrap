@@ -261,11 +261,14 @@ async function updateBlockText(producer, ...args) {
 }
 
 function wrap(before, selection, after, start, end, template) {
+  const m = selection.match(/\s+$/)
+  const [text, whitespaces] =
+    m == null ? [selection, ""] : [selection.substring(0, m.index), m[0]]
   const [wrapBefore, wrapAfter] = template.split("$^")
   return [
-    `${before}${wrapBefore}${selection}${wrapAfter ?? ""}${after}`,
+    `${before}${wrapBefore}${text}${wrapAfter ?? ""}${whitespaces}${after}`,
     start + wrapBefore.length,
-    end + wrapBefore.length,
+    end + wrapBefore.length - whitespaces.length,
   ]
 }
 
