@@ -239,9 +239,18 @@ async function updateBlockText(producer, ...args) {
 
   const start = textarea.selectionStart
   const end = textarea.selectionEnd
-  const before = textarea.value.substring(0, start)
-  const selection = textarea.value.substring(start, end)
-  const after = textarea.value.substring(end)
+  let before = textarea.value.substring(0, start)
+  let selection = textarea.value.substring(start, end)
+  let after = textarea.value.substring(end)
+
+  const trimRegex = /^(\s*).*?(\s*)$/
+  const match = selection.match(trimRegex)
+  const startWhitespaces = match[1]
+  const endWhitespaces = match[2]
+  before = before + startWhitespaces
+  after = endWhitespaces + after
+  selection = selection.trim()
+
   const [text, selStart, selEnd] = await producer(
     before,
     selection,
