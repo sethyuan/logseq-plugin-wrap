@@ -32,7 +32,7 @@ jobs:
         id: build
         run: |
           yarn
-          yarn clean && yarn build
+          yarn build
           mkdir ${{ env.PLUGIN_NAME }}
           cp README.md package.json icon.png ${{ env.PLUGIN_NAME }}
           mv dist ${{ env.PLUGIN_NAME }}

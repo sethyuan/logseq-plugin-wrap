@@ -49,6 +49,10 @@ async function main() {
       height: 20px;
     }
 
+    mark {
+      background: #fef3ac !important;
+      color: #262626 !important;
+    }
     span[data-ref="#red"],
     span[data-ref="#green"],
     span[data-ref="#blue"],
@@ -58,28 +62,31 @@ async function main() {
       display: none;
     }
     span[data-ref="#red"] + mark {
-      background: #ffc7c7;
+      background: #ffc7c7 !important;
+      color: #262626 !important;
     }
     span[data-ref="#green"] + mark {
-      background: #ccffc1;
+      background: #ccffc1 !important;
+      color: #262626 !important;
     }
     span[data-ref="#blue"] + mark {
-      background: #abdfff;
+      background: #abdfff !important;
+      color: #262626 !important;
     }
     span[data-ref="$red"] + mark {
-      color: #f00;
+      color: #f00 !important;
       background: unset;
       padding: 0;
       border-radius: 0;
     }
     span[data-ref="$green"] + mark {
-      color: #0f0;
+      color: #0f0 !important;
       background: unset;
       padding: 0;
       border-radius: 0;
     }
     span[data-ref="$blue"] + mark {
-      color: #00f;
+      color: #00f !important;
       background: unset;
       padding: 0;
       border-radius: 0;
