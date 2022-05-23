@@ -75,19 +75,19 @@ async function main() {
     }
     span[data-ref="$red"] + mark {
       color: #f00 !important;
-      background: unset;
+      background: unset !important;
       padding: 0;
       border-radius: 0;
     }
     span[data-ref="$green"] + mark {
       color: #0f0 !important;
-      background: unset;
+      background: unset !important;
       padding: 0;
       border-radius: 0;
     }
     span[data-ref="$blue"] + mark {
       color: #00f !important;
-      background: unset;
+      background: unset !important;
       padding: 0;
       border-radius: 0;
     }
