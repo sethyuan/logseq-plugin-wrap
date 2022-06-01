@@ -1,4 +1,5 @@
 import html from "@rollup/plugin-html"
+import json from "@rollup/plugin-json"
 import { nodeResolve } from "@rollup/plugin-node-resolve"
 import { readFile } from "fs/promises"
 import { defineRollupSwcOption, swc } from "rollup-plugin-swc3"
@@ -24,6 +25,7 @@ export default {
       },
     }),
     nodeResolve(),
+    json(),
     swc(
       defineRollupSwcOption({
         jsc: {
