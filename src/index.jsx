@@ -119,7 +119,8 @@ async function main() {
     // Let div root element get generated first.
     setTimeout(async () => {
       toolbar = parent.document.getElementById(TOOLBAR_ID)
-      render(<Toolbar items={definitions} model={model} />, toolbar)
+      const items = definitions.filter((definition) => definition.icon)
+      render(<Toolbar items={items} model={model} />, toolbar)
 
       toolbar.addEventListener("transitionend", onToolbarTransitionEnd)
       parent.document.addEventListener("focusout", onBlur)

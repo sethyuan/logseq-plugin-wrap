@@ -13,14 +13,10 @@ export default function Toolbar({ items, model }) {
       onMouseDown={(e) => triggerAction(e, key)}
       title={label}
     >
-      {icon ? (
-        <img
-          src={`data:image/svg+xml;utf8,${encodeURIComponent(icon)}`}
-          alt={label}
-        />
-      ) : (
-        "X"
-      )}
+      <img
+        src={`data:image/svg+xml;utf8,${encodeURIComponent(icon)}`}
+        alt={label}
+      />
     </div>
   ))
 }
