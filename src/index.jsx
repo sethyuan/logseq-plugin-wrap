@@ -14,11 +14,7 @@ async function main() {
   toolbar = null
   textarea = null
 
-  await setup({
-    urlTemplate:
-      "https://raw.githubusercontent.com/sethyuan/logseq-plugin-wrap/master/src/translations/${locale}.json",
-    builtinTranslations: { "zh-CN": zhCN },
-  })
+  await setup({ builtinTranslations: { "zh-CN": zhCN } })
 
   const definitions = await getDefinitions()
 
