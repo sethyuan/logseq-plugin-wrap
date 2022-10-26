@@ -6,21 +6,17 @@ export default function Toolbar({ items, model }) {
     model[key]()
   }
 
-  return (
-    <div className="container">
-      {items.map(({ key, label, icon }) => (
-        <div
-          key={key}
-          class="kef-wrap-tb-item"
-          onMouseDown={(e) => triggerAction(e, key)}
-          title={label}
-        >
-          <img
-            src={`data:image/svg+xml;utf8,${encodeURIComponent(icon)}`}
-            alt={label}
-          />
-        </div>
-      ))}
+  return items.map(({ key, label, icon }) => (
+    <div
+      key={key}
+      class="kef-wrap-tb-item"
+      onMouseDown={(e) => triggerAction(e, key)}
+      title={label}
+    >
+      <img
+        src={`data:image/svg+xml;utf8,${encodeURIComponent(icon)}`}
+        alt={label}
+      />
     </div>
-  )
+  ))
 }
