@@ -52,6 +52,9 @@ async function main() {
       width: 20px;
       height: 20px;
     }
+    .kef-wrap-hidden #kef-wrap-toolbar {
+      display: none;
+    }
 
     mark {
       background: #fef3ac !important;
@@ -111,6 +114,22 @@ async function main() {
       path: "#app-container",
       template: `<div id="${TOOLBAR_ID}"></div>`,
     })
+
+    if (logseq.settings?.toolbarShortcut) {
+      logseq.App.registerCommandPalette(
+        {
+          key: "toggle-toolbar",
+          label: t("Toggle toolbar display."),
+          keybinding: { binding: logseq.settings?.toolbarShortcut },
+        },
+        toggleToolbarDisplay,
+      )
+    } else {
+      logseq.App.registerCommandPalette(
+        { key: "toggle-toolbar", label: t("Toggle toolbar display.") },
+        toggleToolbarDisplay,
+      )
+    }
 
     // Let div root element get generated first.
     setTimeout(async () => {
@@ -355,6 +374,15 @@ const showToolbar = debounce(async () => {
 function onScroll(e) {
   hideToolbar()
   showToolbar()
+}
+
+function toggleToolbarDisplay() {
+  const appContainer = parent.document.getElementById("app-container")
+  if (appContainer.classList.contains("kef-wrap-hidden")) {
+    appContainer.classList.remove("kef-wrap-hidden")
+  } else {
+    appContainer.classList.add("kef-wrap-hidden")
+  }
 }
 
 logseq.ready(main).catch(console.error)

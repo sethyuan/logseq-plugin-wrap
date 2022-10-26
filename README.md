@@ -16,6 +16,7 @@ Create your own wrappings/replacements with optional key bindings for selected t
 {
   "disabled": false,
   "toolbar": true,
+  "toolbarShortcut": "",
   "wrap-cloze": {
     "label": "Wrap with cloze",
     "binding": "",
@@ -143,12 +144,14 @@ Here is another set of configs, you can modify it how you like:
 在 Logseq 的插件页面打开插件的配置后，有以下几项配置可供使用，请参照上方代码块进行设置（各项的默认值以体现在代码块中）：
 
 - `toolbar`: 不想用工具栏可以设置为`false`。
+- `toolbarShortcut`: 设置一个可选快捷键，控制是否显示工具栏。
 - `wrap-*`: 自定义的文字包围都定义在这里。你可以扩展默认提供的这些规则，也可以移除或替换你不需要的规则。配置方法请参考上面的示例，`binding`不能出现重复。`template`是你包围文字的模板，里面的`$^`代表原本被选中的文字。
 - `repl-*`: 自定义的文字替换都定义在这里。你可以扩展默认提供的这些规则，也可以移除或替换你不需要的规则。配置方法请参考上面的示例，`binding`不能出现重复。`regex`是替换规则的正则表达式，`replacement`描述了要将正则表达式匹配到的文字替换为什么。
 
 There are a couple of user settings available when you access the plugin settings from Logseq's plugins page. Please refer to the source block above (Default values are given in the source block).
 
 - `toolbar`: You can set it to `false` if you don't want to use the toolbar.
+- `toolbarShortcut`: An optional shortcut to toggle the toolbar visibility.
 - `wrap-*`: Your custom wrappings are defined here. You can extend default wrappings and/or replace/remove them. Please refer to the above configuration for how to define wrappings. `binding` should be unique, `template` defines how you want the selected text to be wrapped, `$^` represents the selected text.
 - `repl-*`: Your custom replacements are defined here. You can extend default replacements and/or replace/remove them. Please refer to the above configuration for how to define replacements. `binding` should be unique, `regex` is the regular expression used to match text that you want to replace to, `replacement` defines what to replace the match with.
 

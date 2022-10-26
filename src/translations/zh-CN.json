@@ -7,5 +7,6 @@
   "Wrap with green text": "包围成绿色文字",
   "Wrap with blue text": "包围成蓝色文字",
   "Remove formatting": "去除格式化",
-  "This command can only be used when editing text": "该命令仅在编辑文字时可使用"
+  "This command can only be used when editing text": "该命令仅在编辑文字时可使用",
+  "Toggle toolbar display.": "切换工具条显示。"
 }
