@@ -1,6 +1,6 @@
 {
   "name": "logseq-plugin-wrap",
-  "version": "0.5.3",
+  "version": "0.5.4",
   "main": "dist/index.html",
   "logseq": {
     "id": "_sethyuan-logseq-wrap",

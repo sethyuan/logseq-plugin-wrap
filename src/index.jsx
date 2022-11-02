@@ -119,14 +119,14 @@ async function main() {
       logseq.App.registerCommandPalette(
         {
           key: "toggle-toolbar",
-          label: t("Toggle toolbar display."),
+          label: t("Toggle toolbar display"),
           keybinding: { binding: logseq.settings?.toolbarShortcut },
         },
         toggleToolbarDisplay,
       )
     } else {
       logseq.App.registerCommandPalette(
-        { key: "toggle-toolbar", label: t("Toggle toolbar display.") },
+        { key: "toggle-toolbar", label: t("Toggle toolbar display") },
         toggleToolbarDisplay,
       )
     }
