@@ -294,8 +294,8 @@ function wrap(before, selection, after, start, end, template) {
   const [wrapBefore, wrapAfter] = template.split("$^")
   return [
     `${before}${wrapBefore}${text}${wrapAfter ?? ""}${whitespaces}${after}`,
-    start + wrapBefore.length,
-    end + wrapBefore.length - whitespaces.length,
+    start,
+    end + wrapBefore.length - whitespaces.length + wrapAfter.length,
   ]
 }
 
