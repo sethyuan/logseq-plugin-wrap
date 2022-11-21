@@ -152,6 +152,9 @@ async function main() {
   parent.document.addEventListener("selectionchange", onSelectionChange)
 
   logseq.beforeunload(async () => {
+    if (textarea) {
+      textarea.removeEventListener("keydown", deletionWorkaroundHandler)
+    }
     const mainContentContainer = parent.document.getElementById(
       "main-content-container",
     )
@@ -310,7 +313,13 @@ async function onSelectionChange(e) {
     activeElement !== textarea &&
     activeElement.nodeName.toLowerCase() === "textarea"
   ) {
+    if (toolbar != null && textarea != null) {
+      textarea.removeEventListener("keydown", deletionWorkaroundHandler)
+    }
     textarea = activeElement
+    if (toolbar != null) {
+      textarea.addEventListener("keydown", deletionWorkaroundHandler)
+    }
   }
 
   if (toolbar != null && activeElement === textarea) {
@@ -322,6 +331,17 @@ async function onSelectionChange(e) {
     } else if (textarea.selectionStart !== textarea.selectionEnd) {
       await positionToolbar()
     }
+  }
+}
+
+function deletionWorkaroundHandler(e) {
+  if (
+    (e.key === "Backspace" || e.key === "Delete") &&
+    textarea.selectionStart === 0 &&
+    textarea.selectionEnd === textarea.value.length &&
+    toolbar.style.opacity !== "0"
+  ) {
+    toolbar.style.opacity = "0"
   }
 }
 
