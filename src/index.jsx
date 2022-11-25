@@ -35,6 +35,23 @@ async function main() {
       height: 30px;
       padding: 0 10px;
     }
+    .kef-wrap-tb-list {
+      position: relative;
+    }
+    .kef-wrap-tb-list:hover .kef-wrap-tb-itemlist {
+      transform: scaleY(1);
+    }
+    .kef-wrap-tb-itemlist {
+      position: absolute;
+      top: 100%;
+      left: 0;
+      background: #333;
+      border-radius: 0 0 6px 6px;
+      transform: scaleY(0);
+      transform-origin: top center;
+      will-change: transform;
+      transition: transform 100ms ease-in-out;
+    }
     .kef-wrap-tb-item {
       width: 30px;
       line-height: 20px;
@@ -101,10 +118,14 @@ async function main() {
   `)
 
   const model = {}
-  for (const { key, template, regex, replacement } of definitions) {
-    model[key] = key.startsWith("wrap-")
-      ? () => updateBlockText(wrap, template)
-      : () => updateBlockText(repl, regex, replacement)
+  for (const definition of definitions) {
+    if (definition.key.startsWith("group-")) {
+      for (const def of definition.items) {
+        registerModel(model, def)
+      }
+    } else {
+      registerModel(model, definition)
+    }
   }
   logseq.provideModel(model)
 
@@ -134,8 +155,7 @@ async function main() {
     // Let div root element get generated first.
     setTimeout(async () => {
       toolbar = parent.document.getElementById(TOOLBAR_ID)
-      const items = definitions.filter((definition) => definition.icon)
-      render(<Toolbar items={items} model={model} />, toolbar)
+      render(<Toolbar items={definitions} model={model} />, toolbar)
 
       toolbar.addEventListener("transitionend", onToolbarTransitionEnd)
       parent.document.addEventListener("focusout", onBlur)
@@ -166,14 +186,13 @@ async function main() {
     parent.document.removeEventListener("selectionchange", onSelectionChange)
   })
 
-  for (const { key, label, binding } of definitions) {
-    if (binding) {
-      logseq.App.registerCommandPalette(
-        { key, label, keybinding: { binding } },
-        model[key],
-      )
+  for (const definition of definitions) {
+    if (definition.key.startsWith("group-")) {
+      for (const def of definition.items) {
+        registerCommand(model, def)
+      }
     } else {
-      logseq.App.registerCommandPalette({ key, label }, model[key])
+      registerCommand(model, definition)
     }
   }
 
@@ -181,14 +200,25 @@ async function main() {
 }
 
 async function getDefinitions() {
-  if (
-    logseq.settings &&
-    Object.keys(logseq.settings).some((k) => k.startsWith("wrap-"))
-  ) {
-    return Object.entries(logseq.settings)
-      .filter(([k, v]) => k.startsWith("wrap-") || k.startsWith("repl-"))
-      .map(([k, v]) => ({ key: k, ...v }))
-  }
+  const ret = Object.entries(logseq.settings ?? {})
+    .filter(
+      ([k, v]) =>
+        k.startsWith("wrap-") ||
+        k.startsWith("repl-") ||
+        k.startsWith("group-"),
+    )
+    .map(([k, v]) => {
+      if (k.startsWith("group-")) {
+        return {
+          key: k,
+          items: Object.entries(v).map(([kk, vv]) => ({ key: kk, ...vv })),
+        }
+      } else {
+        return { key: k, ...v }
+      }
+    })
+
+  if (ret.length > 0) return ret
 
   const { preferredFormat } = await logseq.App.getUserConfigs()
   return [
@@ -254,6 +284,23 @@ async function getDefinitions() {
       icon: `<svg t="1643381967522" viewBox="0 0 1024 1024" version="1.1" xmlns="http://www.w3.org/2000/svg" p-id="1377" width="200" height="200"><path d="M824.4 438.8c0-37.6-30-67.6-67.6-67.6l-135.2 0L621.6 104.8c0-37.6-30-67.6-67.6-67.6-37.6 0-67.6 30-67.6 67.6l0 266.4L358.8 371.2c-37.6 0-67.6 30-67.6 67.6l0 67.6L828 506.4l0-67.6L824.4 438.8 824.4 438.8zM824.4 574c-11.2 0-536.8 0-536.8 0S250 972 88.4 972L280 972c75.2 0 108.8-217.6 108.8-217.6s33.6 195.2 3.6 217.6l105.2 0c-3.6 0 0 0 11.2 0 52.4-7.6 60-247.6 60-247.6s52.4 244 45.2 244c-26.4 0-78.8 0-105.2 0l0 0 154 0c-7.6 0 0 0 11.2 0 48.8-11.2 52.4-187.6 52.4-187.6s22.4 187.6 15.2 187.6c-18.8 0-48.8 0-67.6 0l-3.6 0 90 0C895.6 972 903.2 784.4 824.4 574L824.4 574z" p-id="1378" fill="#eeeeee"></path></svg>`,
     },
   ]
+}
+
+function registerCommand(model, { key, label, binding }) {
+  if (binding) {
+    logseq.App.registerCommandPalette(
+      { key, label, keybinding: { binding } },
+      model[key],
+    )
+  } else {
+    logseq.App.registerCommandPalette({ key, label }, model[key])
+  }
+}
+
+function registerModel(model, { key, template, regex, replacement }) {
+  model[key] = key.startsWith("wrap-")
+    ? () => updateBlockText(wrap, template)
+    : () => updateBlockText(repl, regex, replacement)
 }
 
 async function updateBlockText(producer, ...args) {
