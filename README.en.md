@@ -1,14 +1,14 @@
-中文 | [English](README.en.md)
+[中文](README.md) | English
 
 # logseq-plugin-wrap
 
-创建自定义文字包围/替换及快捷键，默认提供了一组实用的配置。
+Create your own wrappings/replacements with optional key bindings for selected text. A set of useful defaults is also provided.
 
-## 使用展示
+## Usage
 
 ![demo](./demo.gif)
 
-## 用户配置
+## User configs
 
 ![open_settings](./open_settings.png)
 
@@ -69,7 +69,7 @@
 }
 ```
 
-再提供一套配置，大家可以根据各自喜好修改：
+Here is another set of configs, you can modify it how you like:
 
 ```json
 {
@@ -143,41 +143,41 @@
 }
 ```
 
-在 Logseq 的插件页面打开插件的配置后，有以下几项配置可供使用，请参照上方代码块进行设置（各项的默认值以体现在代码块中）：
+There are a couple of user settings available when you access the plugin settings from Logseq's plugins page. Please refer to the source block above (Default values are given in the source block).
 
-- `toolbar`: 不想用工具栏可以设置为`false`。
-- `toolbarShortcut`: 设置一个可选快捷键，控制是否显示工具栏。
-- `wrap-*`: 自定义的文字包围都定义在这里。你可以扩展默认提供的这些规则，也可以移除或替换你不需要的规则。配置方法请参考上面的示例，`binding`不能出现重复。`template`是你包围文字的模板，里面的`$^`代表原本被选中的文字。
-- `repl-*`: 自定义的文字替换都定义在这里。你可以扩展默认提供的这些规则，也可以移除或替换你不需要的规则。配置方法请参考上面的示例，`binding`不能出现重复。`regex`是替换规则的正则表达式，`replacement`描述了要将正则表达式匹配到的文字替换为什么。
-- `group-*`: 将多个定义放在同一个组里即可将多个命令在工具条上组合在一起。
+- `toolbar`: You can set it to `false` if you don't want to use the toolbar.
+- `toolbarShortcut`: An optional shortcut to toggle the toolbar visibility.
+- `wrap-*`: Your custom wrappings are defined here. You can extend default wrappings and/or replace/remove them. Please refer to the above configuration for how to define wrappings. `binding` should be unique, `template` defines how you want the selected text to be wrapped, `$^` represents the selected text.
+- `repl-*`: Your custom replacements are defined here. You can extend default replacements and/or replace/remove them. Please refer to the above configuration for how to define replacements. `binding` should be unique, `regex` is the regular expression used to match text that you want to replace to, `replacement` defines what to replace the match with.
+- `group-*`: You can combine multiple commands into a same group using this setting (They'll show together in the toolbar).
 
-## 自定义工具栏样式
+## Toolbar style customization
 
-请参看下方示例：
+Please refer to the following example:
 
 ```css
-/* 这里更改工具栏本身的样式 */
+/* Here goes styles for the toolbar itself */
 #kef-wrap-toolbar {
   background: #333;
 }
 
-/* 这里是工具栏上按钮的样式 */
+/* Here goes styles for toolbar buttons */
 .kef-wrap-tb-item {
 }
 
-/* 这里是工具栏上按钮在有鼠标悬浮时的样式 */
+/* Here goes styles for toolbar buttons when hovered */
 .kef-wrap-tb-item:hover {
   filter: drop-shadow(0 0 3px #fff);
 }
 
-/* 这里可以定义svg图标的样式 */
+/* Here you can define styles for the svg icon */
 .kef-wrap-tb-item img {
   width: 20px;
   height: 20px;
 }
 ```
 
-内置高亮与文字色的样式如下：
+Builtin styles for highlight and text color is as follows:
 
 ```css
 mark {
@@ -224,6 +224,6 @@ span[data-ref="$blue"] + mark {
 }
 ```
 
-## 关于内置的去除格式化
+## About builtin "Remove formatting"
 
-出于技术原因，嵌套的格式不会被去除干净，这种情况下你可以尝试多次去除。
+Due to technical reason, nested formatting is not cleared completely, you can try to perform multiple removings in this case.
