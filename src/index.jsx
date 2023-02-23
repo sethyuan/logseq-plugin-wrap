@@ -19,6 +19,12 @@ async function main() {
   const definitions = await getDefinitions()
 
   logseq.provideStyle(`
+    :root {
+      --kef-wrap-tb-bg: #333e;
+    }
+    :root.dark {
+      --kef-wrap-tb-bg: #777e;
+    }
     #kef-wrap-toolbar {
       position: absolute;
       top: 0;
@@ -27,7 +33,7 @@ async function main() {
       opacity: 0;
       will-change: opacity;
       transition: opacity 100ms ease-in-out;
-      background: #333;
+      background: var(--kef-wrap-tb-bg);
       border-radius: 6px;
       color: #fff;
       display: flex;
@@ -45,7 +51,7 @@ async function main() {
       position: absolute;
       top: 100%;
       left: 0;
-      background: #333;
+      background: var(--kef-wrap-tb-bg);
       border-radius: 0 0 6px 6px;
       transform: scaleY(0);
       transform-origin: top center;
