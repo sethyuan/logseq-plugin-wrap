@@ -156,6 +156,14 @@ There are a couple of user settings available when you access the plugin setting
 Please refer to the following example:
 
 ```css
+/* Toolbar's background color */
+:root {
+  --kef-wrap-tb-bg: #333e;
+}
+:root.dark {
+  --kef-wrap-tb-bg: #777e;
+}
+
 /* Here goes styles for the toolbar itself */
 #kef-wrap-toolbar {
   background: #333;

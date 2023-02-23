@@ -156,6 +156,14 @@
 请参看下方示例：
 
 ```css
+/* 工具栏的背景色 */
+:root {
+  --kef-wrap-tb-bg: #333e;
+}
+:root.dark {
+  --kef-wrap-tb-bg: #777e;
+}
+
 /* 这里更改工具栏本身的样式 */
 #kef-wrap-toolbar {
   background: #333;
