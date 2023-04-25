@@ -6,6 +6,8 @@ Create your own wrappings/replacements with optional key bindings for selected t
 
 ## Usage
 
+https://user-images.githubusercontent.com/3410293/234194368-cd438917-e6d4-47f4-bd74-9208baed2575.mp4
+
 ![demo](./demo.gif)
 
 ## User configs
