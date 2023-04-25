@@ -6,6 +6,8 @@
 
 ## 使用展示
 
+https://user-images.githubusercontent.com/3410293/234194368-cd438917-e6d4-47f4-bd74-9208baed2575.mp4
+
 ![demo](./demo.gif)
 
 ## 用户配置
