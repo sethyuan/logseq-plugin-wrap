@@ -142,6 +142,10 @@ async function main() {
       width: 100%;
       text-align: center;
     }
+
+    .block-content-inner:has(+ .block-body [data-ref="#caption"] + mark) > .flex-1 {
+      text-align: center;
+    }
   `)
 
   const model = {}
