@@ -90,7 +90,8 @@ async function main() {
     span[data-ref="$red"],
     span[data-ref="$green"],
     span[data-ref="$blue"],
-    span[data-ref="#cloze"] {
+    span[data-ref="#cloze"],
+    span[data-ref="#caption"] {
       display: none;
     }
     span[data-ref="#red"] + mark {
@@ -132,6 +133,14 @@ async function main() {
     span[data-ref="#cloze"] + mark:hover {
       color: var(--ls-primary-text-color) !important;
       background: unset !important;
+    }
+    span[data-ref="#caption"] + mark {
+      background: unset !important;
+      font-size: 0.875em;
+      font-style: italic;
+      display: inline-block;
+      width: 100%;
+      text-align: center;
     }
   `)
 
@@ -260,11 +269,23 @@ async function getDefinitions() {
       ],
     },
     {
-      key: "wrap-code",
-      label: t("Inline code"),
-      binding: "",
-      template: "`$^`",
-      icon: '<svg xmlns="http://www.w3.org/2000/svg"><text stroke="#000" stroke-width="0" x="6" y="22" font-size="24" font-family="Noto Sans JP" xml:space="preserve" fill="#eee">`</text></svg>',
+      key: "group-semantic",
+      items: [
+        {
+          key: "wrap-code",
+          label: t("Inline code"),
+          binding: "",
+          template: "`$^`",
+          icon: '<svg xmlns="http://www.w3.org/2000/svg"><text stroke="#000" stroke-width="0" x="6" y="22" font-size="24" font-family="Noto Sans JP" xml:space="preserve" fill="#eee">`</text></svg>',
+        },
+        {
+          key: "wrap-code",
+          label: t("Caption"),
+          binding: "",
+          template: "[[#caption]]==$^==",
+          icon: '<svg t="1690249238216" class="icon" viewBox="0 0 1024 1024" version="1.1" xmlns="http://www.w3.org/2000/svg" p-id="4930" width="200" height="200"><path d="M128 213.333333v597.333334h768V213.333333H128zM42.666667 213.333333a85.333333 85.333333 0 0 1 85.333333-85.333333h768a85.333333 85.333333 0 0 1 85.333333 85.333333v597.333334a85.333333 85.333333 0 0 1-85.333333 85.333333H128a85.333333 85.333333 0 0 1-85.333333-85.333333V213.333333z m170.666666 469.333334a42.666667 42.666667 0 0 0 0 85.333333h597.333334a42.666667 42.666667 0 0 0 0-85.333333H213.333333z" p-id="4931" fill="#eee"></path></svg>',
+        },
+      ],
     },
     {
       key: "group-style",
@@ -382,7 +403,7 @@ async function getDefinitions() {
       label: t("Remove formatting"),
       binding: "mod+shift+x",
       regex:
-        "\\[\\[(?:#|\\$)(?:red|green|blue|cloze)\\]\\]|==([^=]*)==|~~([^~]*)~~|\\^\\^([^\\^]*)\\^\\^|\\*\\*([^\\*]*)\\*\\*|\\*([^\\*]*)\\*|_([^_]*)_|\\$([^\\$]*)\\$|`([^`]*)`|\\[([^\\]]*)\\]\\([^\\]]*\\)",
+        "\\[\\[(?:#|\\$)(?:red|green|blue|cloze|caption)\\]\\]|==([^=]*)==|~~([^~]*)~~|\\^\\^([^\\^]*)\\^\\^|\\*\\*([^\\*]*)\\*\\*|\\*([^\\*]*)\\*|_([^_]*)_|\\$([^\\$]*)\\$|`([^`]*)`|\\[([^\\]]*)\\]\\([^\\]]*\\)",
       replacement: "$1$2$3$4$5$6$7$8$9",
       icon: '<svg t="1643381967522" viewBox="0 0 1024 1024" version="1.1" xmlns="http://www.w3.org/2000/svg" p-id="1377" width="200" height="200"><path d="M824.4 438.8c0-37.6-30-67.6-67.6-67.6l-135.2 0L621.6 104.8c0-37.6-30-67.6-67.6-67.6-37.6 0-67.6 30-67.6 67.6l0 266.4L358.8 371.2c-37.6 0-67.6 30-67.6 67.6l0 67.6L828 506.4l0-67.6L824.4 438.8 824.4 438.8zM824.4 574c-11.2 0-536.8 0-536.8 0S250 972 88.4 972L280 972c75.2 0 108.8-217.6 108.8-217.6s33.6 195.2 3.6 217.6l105.2 0c-3.6 0 0 0 11.2 0 52.4-7.6 60-247.6 60-247.6s52.4 244 45.2 244c-26.4 0-78.8 0-105.2 0l0 0 154 0c-7.6 0 0 0 11.2 0 48.8-11.2 52.4-187.6 52.4-187.6s22.4 187.6 15.2 187.6c-18.8 0-48.8 0-67.6 0l-3.6 0 90 0C895.6 972 903.2 784.4 824.4 574L824.4 574z" p-id="1378" fill="#eeeeee"></path></svg>',
     },
