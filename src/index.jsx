@@ -283,7 +283,7 @@ async function getDefinitions() {
           icon: '<svg xmlns="http://www.w3.org/2000/svg"><text stroke="#000" stroke-width="0" x="6" y="22" font-size="24" font-family="Noto Sans JP" xml:space="preserve" fill="#eee">`</text></svg>',
         },
         {
-          key: "wrap-code",
+          key: "wrap-caption",
           label: t("Caption"),
           binding: "",
           template: "[[#caption]]==$^==",
