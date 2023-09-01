@@ -151,6 +151,13 @@ https://user-images.githubusercontent.com/3410293/234194368-cd438917-e6d4-47f4-b
 - `repl-*`: 自定义的文字替换都定义在这里。你可以扩展默认提供的这些规则，也可以移除或替换你不需要的规则。配置方法请参考上面的示例，`binding`不能出现重复。`regex`是替换规则的正则表达式，`replacement`描述了要将正则表达式匹配到的文字替换为什么。
 - `group-*`: 将多个定义放在同一个组里即可将多个命令在工具条上组合在一起。
 
+## 社群配置集合Wiki
+
+大家一起来参与：
+
+https://github.com/sethyuan/logseq-plugin-wrap/wiki/%E9%85%8D%E7%BD%AE%E9%9B%86%E5%90%88
+
+
 ## 自定义工具栏样式
 
 请参看下方示例：
