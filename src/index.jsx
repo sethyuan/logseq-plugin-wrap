@@ -497,6 +497,15 @@ async function wrap(
     if (pluginInfo != null && !pluginInfo.settings?.disabled) {
       const commandRet = await logseq.App.invokeExternalPlugin(pluginCommand)
       template = template.replace("$%", commandRet == null ? "" : commandRet)
+    } else {
+      logseq.UI.showMsg(
+        t('You must have the plugin "${pluginId}" installed and enabled.', {
+          pluginId,
+        }),
+        "warning",
+        { timeout: 10000 },
+      )
+      return [`${before}${selection}${after}`, start, end]
     }
   }
 
