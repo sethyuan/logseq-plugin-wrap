@@ -270,6 +270,14 @@ async function getDefinitions() {
           template: "[$^]()",
           icon: '<svg t="1682390611487" viewBox="0 0 1024 1024" version="1.1" xmlns="http://www.w3.org/2000/svg" p-id="2024" width="200" height="200"><path d="M574 665.4c-3.1-3.1-8.2-3.1-11.3 0L446.5 781.6c-53.8 53.8-144.6 59.5-204 0-59.5-59.5-53.8-150.2 0-204l116.2-116.2c3.1-3.1 3.1-8.2 0-11.3l-39.8-39.8c-3.1-3.1-8.2-3.1-11.3 0L191.4 526.5c-84.6 84.6-84.6 221.5 0 306s221.5 84.6 306 0l116.2-116.2c3.1-3.1 3.1-8.2 0-11.3L574 665.4zM832.6 191.4c-84.6-84.6-221.5-84.6-306 0L410.3 307.6c-3.1 3.1-3.1 8.2 0 11.3l39.7 39.7c3.1 3.1 8.2 3.1 11.3 0l116.2-116.2c53.8-53.8 144.6-59.5 204 0 59.5 59.5 53.8 150.2 0 204L665.3 562.6c-3.1 3.1-3.1 8.2 0 11.3l39.8 39.8c3.1 3.1 8.2 3.1 11.3 0l116.2-116.2c84.5-84.6 84.5-221.5 0-306.1z" p-id="2025" fill="#eeeeee"></path><path d="M610.1 372.3c-3.1-3.1-8.2-3.1-11.3 0L372.3 598.7c-3.1 3.1-3.1 8.2 0 11.3l39.6 39.6c3.1 3.1 8.2 3.1 11.3 0l226.4-226.4c3.1-3.1 3.1-8.2 0-11.3l-39.5-39.6z" p-id="2026" fill="#eeeeee"></path></svg>',
         },
+        {
+          key: "wrap-annotate",
+          label: t("Annotate"),
+          binding: "",
+          pluginCommand: "_sethyuan-logseq-long-form.models.createMetaBlock",
+          template: "[$^]((($%)))",
+          icon: '<svg t="1694574701157" viewBox="0 0 1024 1024" version="1.1" xmlns="http://www.w3.org/2000/svg" p-id="3113" width="200" height="200"><path d="M511.973 144.799c-234.814 0-425.17 164.414-425.17 367.23 0 74.25 25.543 143.344 69.438 201.172 17.047 22.426-48.256 151.219-48.256 151.219s158.129-51.371 187.127-36.477c63.49 32.566 137.627 51.258 216.861 51.258 234.869 0 425.225-164.414 425.225-367.172C937.197 309.213 746.842 144.799 511.973 144.799zM301.738 562.775c-28.035 0-50.746-22.711-50.746-50.746s22.711-50.746 50.746-50.746 50.746 22.711 50.746 50.746S329.773 562.775 301.738 562.775zM511.973 562.775c-28.035 0-50.746-22.711-50.746-50.746s22.711-50.746 50.746-50.746c28.033 0 50.746 22.711 50.746 50.746S540.006 562.775 511.973 562.775zM722.205 562.775c-28.035 0-50.746-22.711-50.746-50.746s22.711-50.746 50.746-50.746 50.746 22.711 50.746 50.746S750.24 562.775 722.205 562.775z" p-id="3114" fill="#eeeeee"></path></svg>',
+        },
       ],
     },
     {
@@ -425,10 +433,15 @@ function registerCommand(model, { key, label, binding }) {
   }
 }
 
-function registerModel(model, { key, template, regex, replacement }) {
-  model[key] = key.startsWith("wrap-")
-    ? () => updateBlockText(wrap, template)
-    : () => updateBlockText(repl, regex, replacement)
+function registerModel(
+  model,
+  { key, template, pluginCommand, regex, replacement },
+) {
+  if (key.startsWith("wrap-")) {
+    model[key] = () => updateBlockText(wrap, template, pluginCommand)
+  } else if (key.startsWith("repl-")) {
+    model[key] = () => updateBlockText(repl, regex, replacement)
+  }
 }
 
 async function updateBlockText(producer, ...args) {
@@ -465,10 +478,28 @@ async function updateBlockText(producer, ...args) {
   }
 }
 
-function wrap(before, selection, after, start, end, template) {
+async function wrap(
+  before,
+  selection,
+  after,
+  start,
+  end,
+  template,
+  pluginCommand,
+) {
   const m = selection.match(/\s+$/)
   const [text, whitespaces] =
     m == null ? [selection, ""] : [selection.substring(0, m.index), m[0]]
+
+  if (template.includes("$%") && pluginCommand) {
+    const pluginId = pluginCommand.split(".")[0]
+    const pluginInfo = await logseq.App.getExternalPlugin(pluginId)
+    if (pluginInfo != null && !pluginInfo.settings?.disabled) {
+      const commandRet = await logseq.App.invokeExternalPlugin(pluginCommand)
+      template = template.replace("$%", commandRet == null ? "" : commandRet)
+    }
+  }
+
   const [wrapBefore, wrapAfter] = template.split("$^")
   return [
     `${before}${wrapBefore}${text}${wrapAfter ?? ""}${whitespaces}${after}`,
