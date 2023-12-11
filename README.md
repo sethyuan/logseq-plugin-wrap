@@ -255,6 +255,7 @@ span[data-ref="_red"] + mark {
   padding: 0;
   border-radius: 0;
   background: unset !important;
+  color: unset !important;
 }
 span[data-ref="_green"] + mark {
   text-decoration: underline 2px solid #1ac407 !important;
@@ -263,6 +264,7 @@ span[data-ref="_green"] + mark {
   padding: 0;
   border-radius: 0;
   background: unset !important;
+  color: unset !important;
 }
 span[data-ref="_blue"] + mark {
   text-decoration: underline 2px solid #0764c4 !important;
@@ -271,6 +273,7 @@ span[data-ref="_blue"] + mark {
   padding: 0;
   border-radius: 0;
   background: unset !important;
+  color: unset !important;
 }
 span[data-ref="$red"] + mark {
   color: #f00 !important;

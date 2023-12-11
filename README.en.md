@@ -224,7 +224,10 @@ span[data-ref="#green"],
 span[data-ref="#blue"],
 span[data-ref="$red"],
 span[data-ref="$green"],
-span[data-ref="$blue"] {
+span[data-ref="$blue"],
+span[data-ref="_red"],
+span[data-ref="_green"],
+span[data-ref="_blue"] {
   display: none;
 }
 span[data-ref="#red"] + mark {
@@ -238,6 +241,33 @@ span[data-ref="#green"] + mark {
 span[data-ref="#blue"] + mark {
   background: #abdfff !important;
   color: #262626 !important;
+}
+span[data-ref="_red"] + mark {
+  text-decoration: underline 2px solid #e20f0f !important;
+  text-underline-position: under !important;
+  text-underline-offset: 3px;
+  padding: 0;
+  border-radius: 0;
+  background: unset !important;
+  color: unset !important;
+}
+span[data-ref="_green"] + mark {
+  text-decoration: underline 2px solid #1ac407 !important;
+  text-underline-position: under !important;
+  text-underline-offset: 3px;
+  padding: 0;
+  border-radius: 0;
+  background: unset !important;
+  color: unset !important;
+}
+span[data-ref="_blue"] + mark {
+  text-decoration: underline 2px solid #0764c4 !important;
+  text-underline-position: under !important;
+  text-underline-offset: 3px;
+  padding: 0;
+  border-radius: 0;
+  background: unset !important;
+  color: unset !important;
 }
 span[data-ref="$red"] + mark {
   color: #f00 !important;
