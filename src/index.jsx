@@ -18,135 +18,7 @@ async function main() {
 
   const definitions = await getDefinitions()
 
-  logseq.provideStyle(`
-    :root {
-      --kef-wrap-tb-bg: #333e;
-    }
-    :root.dark {
-      --kef-wrap-tb-bg: #777e;
-    }
-    #kef-wrap-toolbar {
-      position: absolute;
-      top: 0;
-      left: -99999px;
-      z-index: var(--ls-z-index-level-2);
-      opacity: 0;
-      will-change: opacity;
-      transition: opacity 100ms ease-in-out;
-      background: var(--kef-wrap-tb-bg);
-      border-radius: 6px;
-      color: #fff;
-      display: flex;
-      align-items: center;
-      height: 30px;
-      padding: 0 10px;
-    }
-    .kef-wrap-tb-list {
-      position: relative;
-    }
-    .kef-wrap-tb-list:hover .kef-wrap-tb-itemlist {
-      transform: scaleY(1);
-    }
-    .kef-wrap-tb-itemlist {
-      position: absolute;
-      top: 100%;
-      left: 0;
-      background: var(--kef-wrap-tb-bg);
-      border-radius: 0 0 6px 6px;
-      transform: scaleY(0);
-      transform-origin: top center;
-      will-change: transform;
-      transition: transform 100ms ease-in-out;
-    }
-    .kef-wrap-tb-item {
-      width: 30px;
-      line-height: 20px;
-      height: 30px;
-      overflow: hidden;
-      text-align: center;
-      padding: 5px;
-      margin: 0 2px;
-      cursor: pointer;
-    }
-    .kef-wrap-tb-item:hover {
-      filter: drop-shadow(0 0 3px #fff);
-    }
-    .kef-wrap-tb-item img {
-      width: 20px;
-      height: 20px;
-      vertical-align: initial;
-    }
-    .kef-wrap-hidden #kef-wrap-toolbar {
-      display: none;
-    }
-
-    mark {
-      background: #fef3ac !important;
-      color: #262626 !important;
-    }
-    span[data-ref="#red"],
-    span[data-ref="#green"],
-    span[data-ref="#blue"],
-    span[data-ref="$red"],
-    span[data-ref="$green"],
-    span[data-ref="$blue"],
-    span[data-ref="#cloze"],
-    span[data-ref="#caption"] {
-      display: none;
-    }
-    span[data-ref="#red"] + mark {
-      background: #ffc7c7 !important;
-      color: #262626 !important;
-    }
-    span[data-ref="#green"] + mark {
-      background: #ccffc1 !important;
-      color: #262626 !important;
-    }
-    span[data-ref="#blue"] + mark {
-      background: #abdfff !important;
-      color: #262626 !important;
-    }
-    span[data-ref="$red"] + mark {
-      color: #e20f0f !important;
-      background: unset !important;
-      padding: 0;
-      border-radius: 0;
-    }
-    span[data-ref="$green"] + mark {
-      color: #1ac21a !important;
-      background: unset !important;
-      padding: 0;
-      border-radius: 0;
-    }
-    span[data-ref="$blue"] + mark {
-      color: #104de0 !important;
-      background: unset !important;
-      padding: 0;
-      border-radius: 0;
-    }
-    span[data-ref="#cloze"] + mark {
-      color: transparent !important;
-      background: unset !important;
-      text-decoration: underline 1px dashed var(--ls-primary-text-color) !important;
-      text-underline-position: under !important;
-    }
-    span[data-ref="#cloze"] + mark:hover {
-      color: var(--ls-primary-text-color) !important;
-      background: unset !important;
-    }
-    span[data-ref="#caption"] + mark {
-      background: unset !important;
-      font-size: 0.875em;
-      font-style: italic;
-      display: inline-block;
-      width: 100%;
-      text-align: center;
-    }
-
-    .block-content-inner:has(+ .block-body [data-ref="#caption"] + mark) > .flex-1 {
-      text-align: center;
-    }
-  `)
+  provideStyles()
 
   const model = {}
   for (const definition of definitions) {
@@ -228,6 +100,165 @@ async function main() {
   }
 
   console.log("#wrap loaded")
+}
+
+function provideStyles() {
+  logseq.provideStyle(`
+    :root {
+      --kef-wrap-tb-bg: #333e;
+    }
+    :root.dark {
+      --kef-wrap-tb-bg: #777e;
+    }
+    #kef-wrap-toolbar {
+      position: absolute;
+      top: 0;
+      left: -99999px;
+      z-index: var(--ls-z-index-level-2);
+      opacity: 0;
+      will-change: opacity;
+      transition: opacity 100ms ease-in-out;
+      background: var(--kef-wrap-tb-bg);
+      border-radius: 6px;
+      color: #fff;
+      display: flex;
+      align-items: center;
+      height: 30px;
+      padding: 0 10px;
+    }
+    .kef-wrap-tb-list {
+      position: relative;
+    }
+    .kef-wrap-tb-list:hover .kef-wrap-tb-itemlist {
+      transform: scaleY(1);
+    }
+    .kef-wrap-tb-itemlist {
+      position: absolute;
+      top: 100%;
+      left: 0;
+      background: var(--kef-wrap-tb-bg);
+      border-radius: 0 0 6px 6px;
+      transform: scaleY(0);
+      transform-origin: top center;
+      will-change: transform;
+      transition: transform 100ms ease-in-out;
+    }
+    .kef-wrap-tb-item {
+      width: 28px;
+      line-height: 20px;
+      height: 30px;
+      overflow: hidden;
+      text-align: center;
+      padding: 5px 4px;
+      margin: 0;
+      cursor: pointer;
+    }
+    .kef-wrap-tb-item:hover {
+      filter: drop-shadow(0 0 3px #fff);
+    }
+    .kef-wrap-tb-item img {
+      width: 20px;
+      height: 20px;
+      vertical-align: initial;
+    }
+    .kef-wrap-hidden #kef-wrap-toolbar {
+      display: none;
+    }
+
+    mark {
+      background: #fef3ac !important;
+      color: #262626 !important;
+    }
+    span[data-ref="#red"],
+    span[data-ref="#green"],
+    span[data-ref="#blue"],
+    span[data-ref="$red"],
+    span[data-ref="$green"],
+    span[data-ref="$blue"],
+    span[data-ref="_red"],
+    span[data-ref="_green"],
+    span[data-ref="_blue"],
+    span[data-ref="#cloze"],
+    span[data-ref="#caption"] {
+      display: none;
+    }
+    span[data-ref="#red"] + mark {
+      background: #ffc7c7 !important;
+      color: #262626 !important;
+    }
+    span[data-ref="#green"] + mark {
+      background: #ccffc1 !important;
+      color: #262626 !important;
+    }
+    span[data-ref="#blue"] + mark {
+      background: #abdfff !important;
+      color: #262626 !important;
+    }
+    span[data-ref="_red"] + mark {
+      text-decoration: underline 2px solid #e20f0f !important;
+      text-underline-position: under !important;
+      text-underline-offset: 3px;
+      padding: 0;
+      border-radius: 0;
+      background: unset !important;
+    }
+    span[data-ref="_green"] + mark {
+      text-decoration: underline 2px solid #1ac407 !important;
+      text-underline-position: under !important;
+      text-underline-offset: 3px;
+      padding: 0;
+      border-radius: 0;
+      background: unset !important;
+    }
+    span[data-ref="_blue"] + mark {
+      text-decoration: underline 2px solid #0764c4 !important;
+      text-underline-position: under !important;
+      text-underline-offset: 3px;
+      padding: 0;
+      border-radius: 0;
+      background: unset !important;
+    }
+    span[data-ref="$red"] + mark {
+      color: #e20f0f !important;
+      background: unset !important;
+      padding: 0;
+      border-radius: 0;
+    }
+    span[data-ref="$green"] + mark {
+      color: #1ac21a !important;
+      background: unset !important;
+      padding: 0;
+      border-radius: 0;
+    }
+    span[data-ref="$blue"] + mark {
+      color: #104de0 !important;
+      background: unset !important;
+      padding: 0;
+      border-radius: 0;
+    }
+    span[data-ref="#cloze"] + mark {
+      color: transparent !important;
+      background: unset !important;
+      text-decoration: underline 1px dashed var(--ls-primary-text-color) !important;
+      text-underline-position: under !important;
+    }
+    span[data-ref="#cloze"] + mark:hover {
+      color: var(--ls-primary-text-color) !important;
+      background: unset !important;
+    }
+    span[data-ref="#caption"] + mark {
+      background: unset !important;
+      font-size: 0.875em;
+      font-style: italic;
+      display: inline-block;
+      width: 100%;
+      text-align: center;
+    }
+
+    .block-content-inner:has(+ .block-body [data-ref="#caption"] + mark) > .flex-1 {
+      text-align: center;
+    }
+  `)
 }
 
 async function getDefinitions() {
@@ -366,6 +397,32 @@ async function getDefinitions() {
       ],
     },
     {
+      key: "group-underline",
+      items: [
+        {
+          key: "wrap-red-underline",
+          label: t("Red underline"),
+          binding: "",
+          template: "[[_red]]==$^==",
+          icon: '<svg t="1702279166670" class="icon" viewBox="0 0 1024 1024" version="1.1" xmlns="http://www.w3.org/2000/svg" p-id="4768" width="200" height="200"><path d="M341.333333 128v384a170.666667 170.666667 0 1 0 341.333334 0V128h85.333333v384a256 256 0 1 1-512 0V128h85.333333zM170.666667 853.333333h682.666666v85.333334H170.666667v-85.333334z" p-id="4769" fill="#f00"></path></svg>',
+        },
+        {
+          key: "wrap-green-underline",
+          label: t("Green underline"),
+          binding: "",
+          template: "[[_green]]==$^==",
+          icon: '<svg t="1702279166670" class="icon" viewBox="0 0 1024 1024" version="1.1" xmlns="http://www.w3.org/2000/svg" p-id="4768" width="200" height="200"><path d="M341.333333 128v384a170.666667 170.666667 0 1 0 341.333334 0V128h85.333333v384a256 256 0 1 1-512 0V128h85.333333zM170.666667 853.333333h682.666666v85.333334H170.666667v-85.333334z" p-id="4769" fill="#0f0"></path></svg>',
+        },
+        {
+          key: "wrap-blue-underline",
+          label: t("Blue underline"),
+          binding: "",
+          template: "[[_blue]]==$^==",
+          icon: '<svg t="1702279166670" class="icon" viewBox="0 0 1024 1024" version="1.1" xmlns="http://www.w3.org/2000/svg" p-id="4768" width="200" height="200"><path d="M341.333333 128v384a170.666667 170.666667 0 1 0 341.333334 0V128h85.333333v384a256 256 0 1 1-512 0V128h85.333333zM170.666667 853.333333h682.666666v85.333334H170.666667v-85.333334z" p-id="4769" fill="#00beff"></path></svg>',
+        },
+      ],
+    },
+    {
       key: "group-text",
       items: [
         {
@@ -415,7 +472,7 @@ async function getDefinitions() {
       label: t("Remove formatting"),
       binding: "mod+shift+x",
       regex:
-        "\\[\\[(?:#|\\$)(?:red|green|blue|cloze|caption)\\]\\]|==([^=]*)==|~~([^~]*)~~|\\^\\^([^\\^]*)\\^\\^|\\*\\*([^\\*]*)\\*\\*|\\*([^\\*]*)\\*|_([^_]*)_|\\$([^\\$]*)\\$|`([^`]*)`|\\[([^\\]]*)\\]\\([^\\]]*\\)",
+        "\\[\\[(?:#|\\$|_)(?:red|green|blue|cloze|caption)\\]\\]|==([^=]*)==|~~([^~]*)~~|\\^\\^([^\\^]*)\\^\\^|\\*\\*([^\\*]*)\\*\\*|\\*([^\\*]*)\\*|_([^_]*)_|\\$([^\\$]*)\\$|`([^`]*)`|\\[([^\\]]*)\\]\\([^\\]]*\\)",
       replacement: "$1$2$3$4$5$6$7$8$9",
       icon: '<svg t="1643381967522" viewBox="0 0 1024 1024" version="1.1" xmlns="http://www.w3.org/2000/svg" p-id="1377" width="200" height="200"><path d="M824.4 438.8c0-37.6-30-67.6-67.6-67.6l-135.2 0L621.6 104.8c0-37.6-30-67.6-67.6-67.6-37.6 0-67.6 30-67.6 67.6l0 266.4L358.8 371.2c-37.6 0-67.6 30-67.6 67.6l0 67.6L828 506.4l0-67.6L824.4 438.8 824.4 438.8zM824.4 574c-11.2 0-536.8 0-536.8 0S250 972 88.4 972L280 972c75.2 0 108.8-217.6 108.8-217.6s33.6 195.2 3.6 217.6l105.2 0c-3.6 0 0 0 11.2 0 52.4-7.6 60-247.6 60-247.6s52.4 244 45.2 244c-26.4 0-78.8 0-105.2 0l0 0 154 0c-7.6 0 0 0 11.2 0 48.8-11.2 52.4-187.6 52.4-187.6s22.4 187.6 15.2 187.6c-18.8 0-48.8 0-67.6 0l-3.6 0 90 0C895.6 972 903.2 784.4 824.4 574L824.4 574z" p-id="1378" fill="#eeeeee"></path></svg>',
     },

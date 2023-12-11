@@ -106,6 +106,26 @@ https://user-images.githubusercontent.com/3410293/234194368-cd438917-e6d4-47f4-b
       "icon": "<svg t=\"1643262039637\" viewBox=\"0 0 1024 1024\" version=\"1.1\" xmlns=\"http://www.w3.org/2000/svg\" p-id=\"6950\" xmlns:xlink=\"http://www.w3.org/1999/xlink\" width=\"200\" height=\"200\"><defs><style type=\"text/css\"></style></defs><path d=\"M114.727313 1024l0.305421-0.427589h-0.977347l0.671926 0.427589zM632.721199 809.365446c-156.680934 0-272.466006 41.644143-341.659116 75.927642L290.878831 972.108985C340.402833 942.605324 458.249497 885.720677 632.73647 885.720677H962.804862v-76.355231H632.73647z m-109.432317-72.018253l252.048617-528.378197a38.177615 38.177615 0 0 0-13.621773-48.790993L551.295981 24.464216a38.192886 38.192886 0 0 0-50.089031 7.696607L130.349594 483.908911a38.208157 38.208157 0 0 0-7.024682 35.886958c31.763776 100.315502 36.436716 182.626441 34.695817 234.777064L94.477906 870.449631h132.094549l32.221908-42.606219c49.78361-25.624815 134.15614-60.931474 233.326314-69.177839a38.147073 38.147073 0 0 0 31.152934-21.31838z m-59.343285-52.54767c-71.66702 8.505973-134.950235 28.572127-184.489509 49.157497l-45.339736-29.244053c-2.290657-50.883126-10.613377-114.716099-31.901215-187.849139l336.161539-409.874879 153.474014 98.986922-193.728492 408.653195-176.838714-112.746134-47.935814 60.015211 191.117142 121.847678-0.519215 1.053702z\" p-id=\"6951\" fill=\"#abdfff\"></path></svg>"
     }
   },
+  "group-underline": {
+    "wrap-red-underline": {
+      "label": "Red underline",
+      "binding": "",
+      "template": "[[_red]]==$^==",
+      "icon": "<svg t=\"1702279166670\" class=\"icon\" viewBox=\"0 0 1024 1024\" version=\"1.1\" xmlns=\"http://www.w3.org/2000/svg\" p-id=\"4768\" width=\"200\" height=\"200\"><path d=\"M341.333333 128v384a170.666667 170.666667 0 1 0 341.333334 0V128h85.333333v384a256 256 0 1 1-512 0V128h85.333333zM170.666667 853.333333h682.666666v85.333334H170.666667v-85.333334z\" p-id=\"4769\" fill=\"#f00\"></path></svg>"
+    },
+    "wrap-green-underline": {
+      "label": "Green underline",
+      "binding": "",
+      "template": "[[_green]]==$^==",
+      "icon": "<svg t=\"1702279166670\" class=\"icon\" viewBox=\"0 0 1024 1024\" version=\"1.1\" xmlns=\"http://www.w3.org/2000/svg\" p-id=\"4768\" width=\"200\" height=\"200\"><path d=\"M341.333333 128v384a170.666667 170.666667 0 1 0 341.333334 0V128h85.333333v384a256 256 0 1 1-512 0V128h85.333333zM170.666667 853.333333h682.666666v85.333334H170.666667v-85.333334z\" p-id=\"4769\" fill=\"#0f0\"></path></svg>"
+    },
+    "wrap-blue-underline": {
+      "label": "Blue underline",
+      "binding": "",
+      "template": "[[_blue]]==$^==",
+      "icon": "<svg t=\"1702279166670\" class=\"icon\" viewBox=\"0 0 1024 1024\" version=\"1.1\" xmlns=\"http://www.w3.org/2000/svg\" p-id=\"4768\" width=\"200\" height=\"200\"><path d=\"M341.333333 128v384a170.666667 170.666667 0 1 0 341.333334 0V128h85.333333v384a256 256 0 1 1-512 0V128h85.333333zM170.666667 853.333333h682.666666v85.333334H170.666667v-85.333334z\" p-id=\"4769\" fill=\"#00beff\"></path></svg>"
+    }
+  },
   "group-text": {
     "wrap-red-text": {
       "label": "Red text",
@@ -198,7 +218,7 @@ https://github.com/sethyuan/logseq-plugin-wrap/wiki/%E9%85%8D%E7%BD%AE%E9%9B%86%
 }
 ```
 
-内置高亮与文字色的样式如下：
+内置高亮、下划线与文字色的样式如下：
 
 ```css
 mark {
@@ -210,7 +230,10 @@ span[data-ref="#green"],
 span[data-ref="#blue"],
 span[data-ref="$red"],
 span[data-ref="$green"],
-span[data-ref="$blue"] {
+span[data-ref="$blue"],
+span[data-ref="_red"],
+span[data-ref="_green"],
+span[data-ref="_blue"] {
   display: none;
 }
 span[data-ref="#red"] + mark {
@@ -224,6 +247,30 @@ span[data-ref="#green"] + mark {
 span[data-ref="#blue"] + mark {
   background: #abdfff !important;
   color: #262626 !important;
+}
+span[data-ref="_red"] + mark {
+  text-decoration: underline 2px solid #e20f0f !important;
+  text-underline-position: under !important;
+  text-underline-offset: 3px;
+  padding: 0;
+  border-radius: 0;
+  background: unset !important;
+}
+span[data-ref="_green"] + mark {
+  text-decoration: underline 2px solid #1ac407 !important;
+  text-underline-position: under !important;
+  text-underline-offset: 3px;
+  padding: 0;
+  border-radius: 0;
+  background: unset !important;
+}
+span[data-ref="_blue"] + mark {
+  text-decoration: underline 2px solid #0764c4 !important;
+  text-underline-position: under !important;
+  text-underline-offset: 3px;
+  padding: 0;
+  border-radius: 0;
+  background: unset !important;
 }
 span[data-ref="$red"] + mark {
   color: #f00 !important;
