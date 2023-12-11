@@ -194,10 +194,14 @@ function provideStyles() {
       background: #abdfff !important;
       color: #262626 !important;
     }
+    span:is([data-ref="_red"], [data-ref="_green"], [data-ref="_blue"]) + mark > code {
+      background-color: var(--ls-page-inline-code-bg-color,#eee) !important;
+      color: var(--ls-page-inline-code-color) !important;
+    }
     span[data-ref="_red"] + mark {
       text-decoration: underline 2px solid #e20f0f !important;
       text-underline-position: under !important;
-      text-underline-offset: 3px;
+      text-underline-offset: 2px;
       padding: 0;
       border-radius: 0;
       background: unset !important;
@@ -206,7 +210,7 @@ function provideStyles() {
     span[data-ref="_green"] + mark {
       text-decoration: underline 2px solid #1ac407 !important;
       text-underline-position: under !important;
-      text-underline-offset: 3px;
+      text-underline-offset: 2px;
       padding: 0;
       border-radius: 0;
       background: unset !important;
@@ -215,7 +219,7 @@ function provideStyles() {
     span[data-ref="_blue"] + mark {
       text-decoration: underline 2px solid #0764c4 !important;
       text-underline-position: under !important;
-      text-underline-offset: 3px;
+      text-underline-offset: 2px;
       padding: 0;
       border-radius: 0;
       background: unset !important;
